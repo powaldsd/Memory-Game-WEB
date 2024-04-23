@@ -76,12 +76,8 @@ function changeDifficulty() {
 function rand(range) {
     return Math.floor(Math.random() * range);
 }
-
-
 //AI
 function check(){
-    
-
     if(playerPattern.length > gamePattern) return false;
     if(playerPattern.length === gamePattern.length){
         for (let i = 0; i < playerPattern.length; i++) {
@@ -95,19 +91,12 @@ function next(){
     setTimeout(() => {
             let randomIndex = rand(4);
             let randomColour = colors[randomIndex];
-    
             gamePattern.push(randomColour);
-    
             //style
             animateGame(randomColour);
-            playSound(randomColour);
-    
-            
-            
+            playSound(randomColour);           
         }, patternGenerationSpeedInSeconds * 1000);  
 }
-
-
 //GAME ADD ONS
 function customMessages(){
     if(level === 5) 
@@ -145,7 +134,6 @@ function updateText(changeColor){
 }
 function gameInit() {
     if(!gameStarted){
-
         updateText(false);
         setTimeout( next, 1000);
 
@@ -155,23 +143,28 @@ function gameInit() {
 function end(){
     playSound("wrong");
     $("#level-title").addClass("incorrect");
+    $("body").addClass("game-over");
     setTimeout(() => {
         $("#level-title").removeClass("incorrect");
+        $("body").removeClass("game-over");
     }, 100);
     setTimeout(() => {
         $("#level-title").addClass("neutral");
+        $("body").addClass("game-over");
     }, 200);
     setTimeout(() => {
         $("#level-title").removeClass("neutral");
+        $("body").removeClass("game-over");
+        $("body").addClass("game-over");
     }, 300);
     setTimeout(() => {
         $("#level-title").addClass("incorrect");
+        $("body").addClass("game-over");
     }, 450);
     setTimeout(() => {
         $("#level-title").removeClass("incorrect");
+        $("body").removeClass("game-over");
     }, 660);
     
-
-
     setTimeout(() => { location.reload() }, 1000);
 }
