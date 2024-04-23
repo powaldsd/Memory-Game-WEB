@@ -7,12 +7,14 @@ let colors = ["green", "red", "yellow", "blue"];
 let level = 1;
 let patternGenerationSpeedInSeconds = 0.65;
 
+let canClick = false;
+
 //EVENTS
 
 
 
 $(".btn").click(function (e) { 
-    if(gameStarted){
+    if(gameStarted && canClick){
         let userPressedButton = $(this).attr("id");
     
         playerPattern.push(userPressedButton);
@@ -58,8 +60,8 @@ $("#start").click(function () {
     $("#level-title").removeClass("hidden");
 });
 function changeDifficulty() {
+    canClick = false;
     level++;
-
 
     updateText(true);
 
@@ -89,8 +91,6 @@ function check(){
     }
     return false;
 }
-
-
 function next(){
     setTimeout(() => {
             let randomIndex = rand(4);
@@ -99,20 +99,34 @@ function next(){
             gamePattern.push(randomColour);
     
             //style
-            animate(randomColour);
+            animateGame(randomColour);
             playSound(randomColour);
     
-            console.log(randomIndex);
+            
             
         }, patternGenerationSpeedInSeconds * 1000);  
 }
 
 
-
-
 //GAME ADD ONS
+function customMessages(){
+    if(level === 5) 
+        $("body").addClass("l5");
+    if(level === 10)
+        $("body").addClass("l10");
+    else if(level === 15)
+        $("body").addClass("l15");
+    else if(level > 99){
+        alert("vjerovatno si koristio konzolu da dodjes dovdje")
+    }
+}
+//CORE
+function animateGame(ref){
+    $("#" + ref).fadeIn(50).fadeOut(50).fadeIn(50).fadeOut(50).fadeIn(50);
+    setTimeout(() => {canClick = true;}, 250);
+}
 function animate(ref){
-    $("#" + ref).fadeIn().fadeIn(80).fadeOut(100).fadeIn(80).fadeOut(70).fadeIn(100);
+    $("#" + ref).fadeIn(50).fadeOut(50).fadeIn(50).fadeOut(50).fadeIn(50);
 }
 function playSound(sound){
     let audio = new Audio("sounds/" + sound + ".mp3");
@@ -129,21 +143,6 @@ function updateText(changeColor){
         $("#level-title").text("Level: " + level);
     }
 }
-function customMessages(){
-    if(level === 6) 
-        alert("Sad ce biti vec malo teze")
-    if(level === 10)
-        alert("Dobro nisi los/a u ovom");
-    else if(level === 15)
-        alert("Ode moj rekord");
-    else if(level === 20)
-        alert("Ne moguce.");
-    else if(level > 99){
-        alert("vjerovatno si koristio konzolu da dodjes dovdje")
-    }
-}
-
-//CORE
 function gameInit() {
     if(!gameStarted){
 
