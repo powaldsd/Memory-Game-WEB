@@ -9,36 +9,35 @@ let patternGenerationSpeedInSeconds = 0.65;
 
 //EVENTS
 
-let isOnMobile = !window.matchMedia("(max-width): 500px");
+
 
 $(".btn").click(function (e) { 
-    let userPressedButton = $(this).attr("id");
+    if(gameStarted){
+        let userPressedButton = $(this).attr("id");
     
-    playerPattern.push(userPressedButton);
-
-    let canProcceed;
-    for (let i = 0; i < playerPattern.length; i++) {
-        canProcceed = playerPattern[i] === gamePattern[i];
+        playerPattern.push(userPressedButton);
+    
+        let canProcceed;
+        for (let i = 0; i < playerPattern.length; i++) {
+            canProcceed = playerPattern[i] === gamePattern[i];
+        }
+        if(!canProcceed) end();
+        
+        if(canProcceed && playerPattern.length === level){
+            if(check())
+                changeDifficulty();
+            else end();
+        }else if(!canProcceed) end();
+    
+       
+    
+        animate(userPressedButton);
+        playSound(userPressedButton);
     }
-    if(!canProcceed) end();
-
-    
-    
-    if(canProcceed && playerPattern.length === level){
-        if(check())
-            changeDifficulty();
-        else end();
-    }else if(!canProcceed) end();
-
-   
-
-    animate(userPressedButton);
-    playSound(userPressedButton);
-
 });
 
 
-
+/*
 if(!isOnMobile){
     console.log("pc");
     $("#start").addClass("hidden");
@@ -50,16 +49,19 @@ if(!isOnMobile){
     })
 }else{
     console.log("phone");
-    $("#level-title").addClass("hidden");
-
-    $("#start").click(function () { 
-        gameInit();
-        $("#start").addClass("hidden");
-    });
-}
+    
+}*/
+$("#level-title").addClass("hidden");
+$("#start").click(function () { 
+    gameInit();
+    $("#start").addClass("hidden");
+    $("#level-title").removeClass("hidden");
+});
 function changeDifficulty() {
     level++;
-    updateText();
+
+
+    updateText(true);
 
     playerPattern = [];
 
@@ -116,8 +118,16 @@ function playSound(sound){
     let audio = new Audio("sounds/" + sound + ".mp3");
     audio.play();
 }
-function updateText(){
-    $("#level-title").text("Level: " + level);
+function updateText(changeColor){
+    if(changeColor){
+        $("#level-title").addClass("correct");
+        setTimeout(() => {$("#level-title").removeClass("correct");}, 500);
+        setTimeout(() => {$("#level-title").addClass("neutral"); }, 600);;
+        $("#level-title").text("Level: " + level);
+        setTimeout(() => {$("#level-title").removeClass("neutral"); }, 800);
+    }else{
+        $("#level-title").text("Level: " + level);
+    }
 }
 function customMessages(){
     if(level === 6) 
@@ -136,7 +146,8 @@ function customMessages(){
 //CORE
 function gameInit() {
     if(!gameStarted){
-        updateText();
+
+        updateText(false);
         setTimeout( next, 1000);
 
         gameStarted = true;
@@ -144,5 +155,24 @@ function gameInit() {
 }
 function end(){
     playSound("wrong");
+    $("#level-title").addClass("incorrect");
+    setTimeout(() => {
+        $("#level-title").removeClass("incorrect");
+    }, 100);
+    setTimeout(() => {
+        $("#level-title").addClass("neutral");
+    }, 200);
+    setTimeout(() => {
+        $("#level-title").removeClass("neutral");
+    }, 300);
+    setTimeout(() => {
+        $("#level-title").addClass("incorrect");
+    }, 450);
+    setTimeout(() => {
+        $("#level-title").removeClass("incorrect");
+    }, 660);
+    
+
+
     setTimeout(() => { location.reload() }, 1000);
 }

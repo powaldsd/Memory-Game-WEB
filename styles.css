@@ -15,15 +15,9 @@ body {
 
 .container {
   display: block;
-
   
 
-  width: 50%;
   margin: auto;
-
-
-  
-
 }
 
 .btn {
@@ -31,10 +25,10 @@ body {
   margin: 25px;
   display: inline-block;
   margin: 20px;
-  height: 200px;
-  width: 200px;
+  height: clamp(100px, 250px, 350px);
+  width: clamp(100px, 250px, 350px);
   border: 10px solid black;
-  border-radius: 20%;
+  border-radius: 25%;
 }
 
 .game-over {
@@ -60,19 +54,26 @@ body {
 .hidden{
   display: none !important;
 }
+.incorrect{
+  color: red !important;
+}
+.correct{
+  color:greenyellow !important; 
+}.neutral{
+  color: black !important;
+}
+
 #start{
+  background-color:#007bff;
+
   padding: 20px 65px;
 
   margin: auto;
+  margin-top: 50px;
   margin-bottom: 5%;
   justify-content: center;
-
 
   font-family: 'Press Start 2P', cursive;
   font-size: 2.5rem;
   text-align: center;
-}
-.pressed {
-  box-shadow: 0 0 20px white;
-  background-color: grey;
 }
